@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MSN 2020</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font: 13px Helvetica, Arial;
+      }
+      form {
+        background: #000;
+        padding: 3px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+      }
+      form input {
+        border: 0;
+        padding: 10px;
+        width: 90%;
+        margin-right: 0.5%;
+      }
+      form button {
+        width: 9%;
+        background: rgb(130, 224, 255);
+        border: none;
+        padding: 10px;
+      }
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages li {
+        padding: 5px 10px;
+      }
+      #messages li:nth-child(odd) {
+        background: #eee;
+      }
+
+      header {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <header><h1>msn 2020</h1></header>
+  <body>
+    <ul id="messages"></ul>
+    <form action=""><input id="m" autocomplete="off" /><button>➡</button></form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      const socket = io();
+
+      const form = document.querySelector("form");
+      const input = document.querySelector("#m");
+      const ul = document.querySelector("#messages");
+      form.addEventListener("submit", sendMessageFn);
+
+      function sendMessageFn(e) {
+        console.log("hello");
+        e.preventDefault();
+        socket.emit("chat message", input.value);
+        input.value = "";
+      }
+
+      socket.on("chat message", function (msg) {
+        let newMessage = document.createElement("li");
+        newMessage.innerText = msg;
+        ul.appendChild(newMessage);
+        //   $('#messages').append($('<li>').text(msg));
+      });
+      //submit message
+      //send value of message from #m input
+    </script>
+  </body>
+</html>
